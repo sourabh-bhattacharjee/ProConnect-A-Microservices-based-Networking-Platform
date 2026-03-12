@@ -1,0 +1,17 @@
+package com.sourabh.projects.linkedin.connectionservice.repository;
+
+import com.sourabh.projects.linkedin.connectionservice.entity.Person;
+import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface PersonRepository extends Neo4jRepository<Person, Long> {
+
+    Optional<Person> getByName(String name);
+    @Query("MATCH (personA:Person) -[:CONNECTED_TO]- (personB:Person) WHERE personA.userId = $userId return personB")
+    List<Person> getFirstDegreeConnections(Long userId);
+   // List<Person> getSecondDegreeConnections();
+    
+}
